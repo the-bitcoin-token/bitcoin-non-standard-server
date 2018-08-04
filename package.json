@@ -17,6 +17,7 @@
     "dist"
   ],
   "scripts": {
+    "serve": "node dist/index.js",
     "test": "jest",
     "coverage": "npm test -- --coverage",
     "postcoverage": "opn coverage/lcov-report/index.html",
@@ -38,7 +39,9 @@
   "keywords": [
     "generator-nod"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.16.3"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -62,5 +65,9 @@
     "prettier": "^1.11.1",
     "rimraf": "^2.6.2",
     "standard-changelog": "^2.0.0"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   }
 }

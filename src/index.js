@@ -1,10 +1,9 @@
 // @flow
 
-/**
- * This function says hello.
- * @param name Some name to say hello for.
- * @returns The hello.
- */
-const sayHello = (name: string = "Haz"): string => `Hello, ${name}!`;
+import express from 'express'
 
-export default sayHello;
+const app = express()
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+app.listen(3000, () => console.log('Example app listening on port 3000!'))
