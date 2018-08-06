@@ -40,7 +40,8 @@
     "generator-nod"
   ],
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "pg-promise": "^8.4.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
