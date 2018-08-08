@@ -21,7 +21,7 @@ export default class Db {
     const sql = `CREATE TABLE DataOutputs (
       tx_id varchar(20) primary key,
       public_key varchar(20) NOT NULL,
-      data_outputs text[] default NULL
+      outputs text[] default NULL
     );`
     return this._db.none(sql)
   }
@@ -29,15 +29,5 @@ export default class Db {
   static async dropDataOutputsTable() {
     const sql = `DROP TABLE DataOutputs;`
     return this._db.none(sql)
-  }
-
-  static async checkIfDataOutputsExists() {
-    const sql = `SELECT EXISTS (
-      SELECT 1
-      FROM   information_schema.tables 
-      WHERE  table_schema = 'public'
-      AND    table_name = 'dataoutputs'
-      );`
-    return this._db.one(sql)
   }
 }
