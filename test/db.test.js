@@ -37,7 +37,7 @@ describe('Db', async () => {
   })
 
   describe('createDataOutputsTable', async () => {
-    it('should create the DataOutputs table', async () => {
+    it.only('should create the DataOutputs table', async () => {
       await Db.createDataOutputsTable()
       const data = await Db._db.none('SELECT * FROM DataOutputs;')
       expect(data).toBe(null)

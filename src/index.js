@@ -11,12 +11,14 @@ Db.getConnection()
 const app = express()
 app.use(bodyParser.json())
 
-app.post('/dataOutputs', (req, res) => {
-  const json = Db._db.none(
-    'INSERT INTO DataOutputs(txId, publicKey, outputData) VALUES(${txId}, ${publicKey}, ${outputData})',
-    req.body
-  )
-  res.send(json)
+app.post('/dataOutputs', async (req: $Subtype<express$Request>, res: express$Response) => {
+  const sql = 'INSERT INTO DataOutputs(txId, publicKey, outputData) VALUES(${txId}, ${publicKey}, ${outputData})'
+  try {
+    await Db._db.none(sql, req.body)
+    res.status(201).json({})
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
