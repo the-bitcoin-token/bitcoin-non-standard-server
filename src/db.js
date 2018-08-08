@@ -20,8 +20,8 @@ export default class Db {
     const sql = `CREATE TABLE DataOutputs (
       txId varchar(20) primary key,
       publicKey varchar(20) NOT NULL,
-      outputData text default NULL
-      read boolean default false
+      outputData text default NULL,
+      new boolean default true
     );`
     return this._db.none(sql)
   }
