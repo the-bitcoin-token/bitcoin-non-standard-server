@@ -1,5 +1,4 @@
 // @flow
-
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db"] }] */
 
 import pgPromise from 'pg-promise'
@@ -19,9 +18,9 @@ export default class Db {
 
   static async createDataOutputsTable() {
     const sql = `CREATE TABLE DataOutputs (
-      tx_id varchar(20) primary key,
-      public_key varchar(20) NOT NULL,
-      outputs text[] default NULL
+      txId varchar(20) primary key,
+      publicKey varchar(20) NOT NULL,
+      outputData text[] default NULL
     );`
     return this._db.none(sql)
   }
