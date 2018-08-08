@@ -18,7 +18,7 @@ app.post(
     const sql =
       'INSERT INTO DataOutputs(txId, publicKey, outputData, new) VALUES(${txId}, ${publicKey}, ${outputData}, true)'
     try {
-      await Db._db.none(sql, req.body)
+      await Db.none(sql, req.body)
       res.status(201).json({})
     } catch (err) {
       res.status(400).json({ error: err.message })
@@ -32,7 +32,7 @@ app.get(
     const sql =
       'SELECT * FROM DataOutputs WHERE publicKey = ${publicKey} AND new = ${new}'
     try {
-      const result = await Db._db.any(sql, {
+      const result = await Db.any(sql, {
         publicKey: req.params.publicKey,
         new: req.params.new
       })

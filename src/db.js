@@ -30,4 +30,12 @@ export default class Db {
     const sql = `DROP TABLE DataOutputs;`
     return this._db.none(sql)
   }
+
+  static none(...params: Array<any>) {
+    return this._db.none(...params)
+  }
+
+  static any(...params: Array<any>) {
+    return this._db.any(...params)
+  }
 }
