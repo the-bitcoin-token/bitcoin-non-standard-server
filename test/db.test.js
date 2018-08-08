@@ -1,5 +1,4 @@
 // @flow
-
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db"] }] */
 
 import Db from '../src/db'
