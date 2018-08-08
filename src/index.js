@@ -12,6 +12,16 @@ const app = express()
 app.use(bodyParser.json())
 
 app.post('/dataOutputs', async (req: $Subtype<express$Request>, res: express$Response) => {
+  const sql = 'INSERT INTO DataOutputs(txId, publicKey, outputData, read) VALUES(${txId}, ${publicKey}, ${outputData}, false)'
+  try {
+    await Db._db.none(sql, req.body)
+    res.status(201).json({})
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
+})
+
+app.get('/dataOutputs:', async (req: $Subtype<express$Request>, res: express$Response) => {
   const sql = 'INSERT INTO DataOutputs(txId, publicKey, outputData) VALUES(${txId}, ${publicKey}, ${outputData})'
   try {
     await Db._db.none(sql, req.body)

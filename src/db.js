@@ -21,6 +21,7 @@ export default class Db {
       txId varchar(20) primary key,
       publicKey varchar(20) NOT NULL,
       outputData text default NULL
+      read boolean default false
     );`
     return this._db.none(sql)
   }
