@@ -18,10 +18,10 @@ export default class Db {
 
   static async createDataOutputsTable() {
     const sql = `CREATE TABLE DataOutputs (
-      txId varchar(20) primary key,
-      publicKey varchar(20) NOT NULL,
-      outputData text default NULL,
-      new boolean default true
+      tx_id varchar(20) primary key,
+      public_key varchar(20) NOT NULL,
+      output_data text default NULL,
+      is_new boolean default true
     );`
     return this._db.none(sql)
   }
