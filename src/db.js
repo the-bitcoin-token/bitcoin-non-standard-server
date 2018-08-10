@@ -18,7 +18,7 @@ export default class Db {
 
   static async createDataOutputsTable() {
     const sql = `CREATE TABLE DataOutputs (
-      tx_id varchar(20) primary key,
+      tx_id varchar(64) primary key,
       public_key varchar(20) NOT NULL,
       output_data text default NULL,
       is_new boolean default true

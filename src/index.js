@@ -28,13 +28,13 @@ app.post(
 )
 
 app.get(
-  '/dataOutputs/:publicKey/:isNew',
+  '/dataOutputs/:txId',
   async (req: $Subtype<express$Request>, res: express$Response) => {
-    const sql =
-      'SELECT * FROM DataOutputs WHERE public_key = ${public_key} AND is_new = ${is_new}'
+    const sql = 'SELECT output_data FROM DataOutputs WHERE tx_id = ${tx_id}'
     try {
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
-      res.status(201).json(result.map(objToCamelCase))
+      const data = JSON.parse(result[0].output_data)
+      res.status(201).json(data.map(objToCamelCase))
     } catch (err) {
       res.status(400).json({ error: err.message })
     }
