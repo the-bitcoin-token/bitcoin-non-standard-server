@@ -9,7 +9,7 @@ export const isUpperCase = (string: string) => !isLowerCase(string)
 export const toSnakeCase = (string: string) => {
   let res = string[0].toLowerCase()
   for (let i = 1; i < string.length; i += 1) {
-    res += 
+    res +=
       isUpperCase(string[i]) && i > 0
         ? `_${string[i].toLowerCase()}`
         : string[i]
