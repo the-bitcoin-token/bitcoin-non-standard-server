@@ -25,7 +25,7 @@ export default class Db {
 
     CREATE TABLE Messages (
       id SERIAL,
-      publicKey varchar(64) primary key,
+      public_key varchar(66) NOT NULL,
       tx_id varchar(64) NOT NULL
     );
     `

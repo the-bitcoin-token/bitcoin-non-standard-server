@@ -17,9 +17,25 @@ app.post(
   '/unP2sh',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     try {
+      // store int UnP2sh
       const insertIntoUnP2sh =
-        'INSERT INTO UnP2sh(tx_id, output_data) VALUES(${tx_id}, ${output_data})'
+        'INSERT INTO UnP2sh(tx_id, output_data) VALUES (${tx_id}, ${output_data})'
       await Db.none(insertIntoUnP2sh, objToSnakeCase(req.body))
+
+      // store int Messages
+      const { outputData, txId } = req.body
+      const outputDataObj = JSON.parse(outputData)
+      const insertIntoMessages =
+        'INSERT INTO Messages(public_key, tx_id) VALUES (${publicKey}, ${txId})'
+      await Promise.all(
+        outputDataObj.map(async element =>
+          Db.none(insertIntoMessages, {
+            txId,
+            publicKey: element.publicKeys[0]
+          })
+        )
+      )
+
       res.status(201).json({})
     } catch (err) {
       res.status(400).json({ error: err.message })
