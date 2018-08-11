@@ -16,18 +16,16 @@ export default class Db {
     this._db = pgp(cn)
   }
 
-  static async createDataOutputsTable() {
-    const sql = `CREATE TABLE DataOutputs (
+  static async createUnP2shTable() {
+    const sql = `CREATE TABLE UnP2sh (
       tx_id varchar(64) primary key,
-      public_key varchar(20) NOT NULL,
-      output_data text default NULL,
-      is_new boolean default true
+      output_data text default NULL
     );`
     return this._db.none(sql)
   }
 
-  static async dropDataOutputsTable() {
-    const sql = `DROP TABLE DataOutputs;`
+  static async dropUnP2shTable() {
+    const sql = `DROP TABLE UnP2sh;`
     return this._db.none(sql)
   }
 

@@ -20,9 +20,9 @@ describe('Db', async () => {
 
   beforeEach(async () => {
     try {
-      await Db.dropDataOutputsTable()
+      await Db.dropUnP2shTable()
     } catch (err) {
-      if (err.message !== 'table "dataoutputs" does not exist') {
+      if (err.message !== 'table "unp2sh" does not exist') {
         throw err
       }
     }
@@ -36,47 +36,47 @@ describe('Db', async () => {
     })
   })
 
-  describe('createDataOutputsTable', async () => {
-    it.only('should create the DataOutputs table', async () => {
-      await Db.createDataOutputsTable()
-      const data = await Db._db.none('SELECT * FROM DataOutputs;')
+  describe('createUnP2shTable', async () => {
+    it.only('should create the UnP2sh table', async () => {
+      await Db.createUnP2shTable()
+      const data = await Db._db.none('SELECT * FROM UnP2sh;')
       expect(data).toBe(null)
     })
 
     it('should throw an error if table is created twice', async () => {
-      await Db.createDataOutputsTable()
+      await Db.createUnP2shTable()
 
-      await expect(Db.createDataOutputsTable()).rejects.toThrow(
-        'relation "dataoutputs" already exists'
+      await expect(Db.createUnP2shTable()).rejects.toThrow(
+        'relation "unp2sh" already exists'
       )
     })
   })
 
-  describe('dropDataOutputsTable', async () => {
-    it('should drop the DataOutputs table', async () => {
-      // querying DataOutputs should throw an error if it does not exist yet
-      await expect(Db._db.none('SELECT * FROM DataOutputs;')).rejects.toThrow(
-        'relation "dataoutputs" does not exist'
+  describe('dropUnP2shTable', async () => {
+    it('should drop the UnP2sh table', async () => {
+      // querying UnP2sh should throw an error if it does not exist yet
+      await expect(Db._db.none('SELECT * FROM UnP2sh;')).rejects.toThrow(
+        'relation "unp2sh" does not exist'
       )
 
-      // querying DataOutputs should work after it is created
-      await Db.createDataOutputsTable()
-      const data = await Db._db.none('SELECT * FROM DataOutputs;')
+      // querying UnP2sh should work after it is created
+      await Db.createUnP2shTable()
+      const data = await Db._db.none('SELECT * FROM UnP2sh;')
       expect(data).toBe(null)
 
-      // querying DataOutputs should throw an error after it has been dropped
-      await Db.dropDataOutputsTable()
-      await expect(Db._db.none('SELECT * FROM DataOutputs;')).rejects.toThrow(
-        'relation "dataoutputs" does not exist'
+      // querying UnP2sh should throw an error after it has been dropped
+      await Db.dropUnP2shTable()
+      await expect(Db._db.none('SELECT * FROM UnP2sh;')).rejects.toThrow(
+        'relation "unp2sh" does not exist'
       )
     })
 
-    it('should throw an error if DataOutputs is dropped twice', async () => {
-      await Db.createDataOutputsTable()
-      await Db.dropDataOutputsTable()
+    it('should throw an error if UnP2sh is dropped twice', async () => {
+      await Db.createUnP2shTable()
+      await Db.dropUnP2shTable()
 
-      await expect(Db.dropDataOutputsTable()).rejects.toThrow(
-        'table "dataoutputs" does not exist'
+      await expect(Db.dropUnP2shTable()).rejects.toThrow(
+        'table "unp2sh" does not exist'
       )
     })
   })

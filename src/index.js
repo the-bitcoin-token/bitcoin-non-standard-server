@@ -17,7 +17,7 @@ app.post(
   '/dataOutputs',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     const sql =
-      'INSERT INTO DataOutputs(tx_id, public_key, output_data, is_new) VALUES(${tx_id}, ${public_key}, ${output_data}, true)'
+      'INSERT INTO UnP2sh(tx_id, output_data) VALUES(${tx_id}, ${output_data})'
     try {
       await Db.none(sql, objToSnakeCase(req.body))
       res.status(201).json({})
@@ -30,7 +30,7 @@ app.post(
 app.get(
   '/dataOutputs/:txId',
   async (req: $Subtype<express$Request>, res: express$Response) => {
-    const sql = 'SELECT output_data FROM DataOutputs WHERE tx_id = ${tx_id}'
+    const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
     try {
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
       const data = JSON.parse(result[0].output_data)
