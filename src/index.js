@@ -14,7 +14,7 @@ const app = express()
 app.use(bodyParser.json())
 
 app.post(
-  '/dataOutputs',
+  '/unP2sh',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     const sql =
       'INSERT INTO UnP2sh(tx_id, output_data) VALUES(${tx_id}, ${output_data})'
@@ -28,7 +28,7 @@ app.post(
 )
 
 app.get(
-  '/dataOutputs/:txId',
+  '/unP2sh/:txId',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
     try {
