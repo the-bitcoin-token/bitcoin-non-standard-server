@@ -20,7 +20,7 @@ describe('Db', async () => {
 
   beforeEach(async () => {
     try {
-      await Db.dropUnP2shTable()
+      await Db.dropSchema()
     } catch (err) {
       if (err.message !== 'table "unp2sh" does not exist') {
         throw err
@@ -36,23 +36,23 @@ describe('Db', async () => {
     })
   })
 
-  describe('createUnP2shTable', async () => {
+  describe('createSchema', async () => {
     it.only('should create the UnP2sh table', async () => {
-      await Db.createUnP2shTable()
+      await Db.createSchema()
       const data = await Db._db.none('SELECT * FROM UnP2sh;')
       expect(data).toBe(null)
     })
 
     it('should throw an error if table is created twice', async () => {
-      await Db.createUnP2shTable()
+      await Db.createSchema()
 
-      await expect(Db.createUnP2shTable()).rejects.toThrow(
+      await expect(Db.createSchema()).rejects.toThrow(
         'relation "unp2sh" already exists'
       )
     })
   })
 
-  describe('dropUnP2shTable', async () => {
+  describe('dropSchema', async () => {
     it('should drop the UnP2sh table', async () => {
       // querying UnP2sh should throw an error if it does not exist yet
       await expect(Db._db.none('SELECT * FROM UnP2sh;')).rejects.toThrow(
@@ -60,22 +60,22 @@ describe('Db', async () => {
       )
 
       // querying UnP2sh should work after it is created
-      await Db.createUnP2shTable()
+      await Db.createSchema()
       const data = await Db._db.none('SELECT * FROM UnP2sh;')
       expect(data).toBe(null)
 
       // querying UnP2sh should throw an error after it has been dropped
-      await Db.dropUnP2shTable()
+      await Db.dropSchema()
       await expect(Db._db.none('SELECT * FROM UnP2sh;')).rejects.toThrow(
         'relation "unp2sh" does not exist'
       )
     })
 
     it('should throw an error if UnP2sh is dropped twice', async () => {
-      await Db.createUnP2shTable()
-      await Db.dropUnP2shTable()
+      await Db.createSchema()
+      await Db.dropSchema()
 
-      await expect(Db.dropUnP2shTable()).rejects.toThrow(
+      await expect(Db.dropSchema()).rejects.toThrow(
         'table "unp2sh" does not exist'
       )
     })
