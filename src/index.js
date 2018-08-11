@@ -14,7 +14,7 @@ const app = express()
 app.use(bodyParser.json())
 
 app.post(
-  '/unP2sh',
+  '/',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     try {
       // store int UnP2sh
