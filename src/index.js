@@ -16,10 +16,10 @@ app.use(bodyParser.json())
 app.post(
   '/unP2sh',
   async (req: $Subtype<express$Request>, res: express$Response) => {
-    const sql =
-      'INSERT INTO UnP2sh(tx_id, output_data) VALUES(${tx_id}, ${output_data})'
     try {
-      await Db.none(sql, objToSnakeCase(req.body))
+      const insertIntoUnP2sh =
+        'INSERT INTO UnP2sh(tx_id, output_data) VALUES(${tx_id}, ${output_data})'
+      await Db.none(insertIntoUnP2sh, objToSnakeCase(req.body))
       res.status(201).json({})
     } catch (err) {
       res.status(400).json({ error: err.message })

@@ -67,7 +67,8 @@ describe('Utils', () => {
         some_key: 'someValue',
         another_key_in_snake_case: 'anotherValue'
       }
-      const res: Object = objToCamelCase(obj)
+      const res: Object | string = objToCamelCase(obj)
+      expect(typeof res === 'Object').toBe(true)
       expect(res.someKey).toBeDefined()
       expect(res.anotherKeyInSnakeCase).toBeDefined()
       expect(res.someKey).toBe('someValue')
