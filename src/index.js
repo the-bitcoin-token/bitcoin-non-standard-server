@@ -46,8 +46,8 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
 app.get(
   '/unP2sh/:txId',
   async (req: $Subtype<express$Request>, res: express$Response) => {
-    const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
     try {
+      const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
       const data = JSON.parse(result[0].output_data)
       res.status(201).json(data.map(objToCamelCase))
@@ -60,11 +60,10 @@ app.get(
 app.get(
   '/messages/:publicKey',
   async (req: $Subtype<express$Request>, res: express$Response) => {
-    const sql = 'SELECT tx_id FROM Messages WHERE public_key = ${public_key}'
     try {
+      const sql = 'SELECT tx_id FROM Messages WHERE public_key = ${public_key}'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
-      const data = JSON.parse(result[0].tx_id)
-      res.status(201).json(data.map(objToCamelCase))
+      res.status(201).json(result.map(objToCamelCase))
     } catch (err) {
       res.status(400).json({ error: err.message })
     }
