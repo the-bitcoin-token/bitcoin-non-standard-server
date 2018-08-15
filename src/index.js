@@ -15,6 +15,7 @@ app.use(bodyParser.json())
 
 app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
   try {
+console.log(req.body)
     // store in UnP2sh
     const insertIntoUnP2sh =
       'INSERT INTO UnP2sh(tx_id, output_data) VALUES (${tx_id}, ${output_data})'
@@ -57,11 +58,24 @@ app.get(
   }
 )
 
+app.post(
+  '/setSpent/',
+  async (req: $Subtype<express$Request>, res: express$Response
+) => {
+  try {
+    const sql = 'UPDATE Messages SET spent = true WHERE tx_id = ${tx_id}'
+    await Db.none(sql, objToSnakeCase(req.body))
+    res.status(201).json({})
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
+})
+
 app.get(
   '/messages/:publicKey',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     try {
-      const sql = 'SELECT tx_id FROM Messages WHERE public_key = ${public_key}'
+      const sql = 'SELECT tx_id FROM Messages WHERE public_key = ${public_key} and spent = false'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
       res.status(201).json(result.map(objToCamelCase))
     } catch (err) {
