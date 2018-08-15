@@ -24,7 +24,7 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
     const { outputData, txId } = req.body
     const outputDataObj = JSON.parse(outputData)
     const insertIntoMessages =
-      'INSERT INTO Messages(public_key, tx_id) VALUES (${publicKey}, ${txId})'
+      'INSERT INTO Messages(public_key, tx_id, spent) VALUES (${publicKey}, ${txId}, false)'
     await Promise.all(
       outputDataObj.map(
         async element =>

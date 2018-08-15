@@ -26,7 +26,8 @@ export default class Db {
     CREATE TABLE Messages (
       id SERIAL,
       public_key varchar(66) NOT NULL,
-      tx_id varchar(64) NOT NULL
+      tx_id varchar(64) NOT NULL,
+      spent boolean NOT NULL
     );
     `
     return this._db.none(sql)
