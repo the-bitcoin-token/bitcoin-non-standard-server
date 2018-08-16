@@ -23,7 +23,7 @@ export default class Db {
       output_data text NOT NULL
     );
 
-    CREATE TABLE Messages (
+    CREATE TABLE Txos (
       id SERIAL,
       public_key varchar(66) NOT NULL,
       tx_id varchar(64) NOT NULL,
@@ -37,8 +37,8 @@ export default class Db {
     const dropUnP2sh = `DROP TABLE UnP2sh;`
     await this._db.none(dropUnP2sh)
 
-    const dropMessages = `DROP TABLE Messages;`
-    await this._db.none(dropMessages)
+    const dropTxos = `DROP TABLE Txos;`
+    await this._db.none(dropTxos)
   }
 
   static none(...params: Array<any>) {

@@ -15,22 +15,22 @@ app.use(bodyParser.json())
 
 app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
   try {
-console.log(req.body)
     // store in UnP2sh
     const insertIntoUnP2sh =
       'INSERT INTO UnP2sh(tx_id, output_data) VALUES (${tx_id}, ${output_data})'
     await Db.none(insertIntoUnP2sh, objToSnakeCase(req.body))
 
-    // store in Messages
+    // store in Txos
     const { outputData, txId } = req.body
     const outputDataObj = JSON.parse(outputData)
-    const insertIntoMessages =
-      'INSERT INTO Messages(public_key, tx_id, spent) VALUES (${publicKey}, ${txId}, false)'
+
+    const insertIntoTxos =
+      'INSERT INTO Txos(public_key, tx_id, spent) VALUES (${publicKey}, ${txId}, false)'
     await Promise.all(
       outputDataObj.map(
         async element =>
           typeof element === 'object'
-            ? Db.none(insertIntoMessages, {
+            ? Db.none(insertIntoTxos, {
                 txId,
                 publicKey: element.publicKeys[0]
               })
@@ -45,7 +45,7 @@ console.log(req.body)
 })
 
 app.get(
-  '/unP2sh/:txId',
+  '/un-p2sh/:txId',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     try {
       const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
@@ -59,23 +59,24 @@ app.get(
 )
 
 app.post(
-  '/setSpent/',
-  async (req: $Subtype<express$Request>, res: express$Response
-) => {
-  try {
-    const sql = 'UPDATE Messages SET spent = true WHERE tx_id = ${tx_id}'
-    await Db.none(sql, objToSnakeCase(req.body))
-    res.status(201).json({})
-  } catch (err) {
-    res.status(400).json({ error: err.message })
-  }
-})
-
-app.get(
-  '/messages/:publicKey',
+  '/txos/set-spent/',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     try {
-      const sql = 'SELECT tx_id FROM Messages WHERE public_key = ${public_key} and spent = false'
+      const sql = 'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id}'
+      await Db.none(sql, objToSnakeCase(req.body))
+      res.status(201).json({})
+    } catch (err) {
+      res.status(400).json({ error: err.message })
+    }
+  }
+)
+
+app.get(
+  '/txos/:publicKey',
+  async (req: $Subtype<express$Request>, res: express$Response) => {
+    try {
+      const sql =
+        'SELECT tx_id FROM Txos WHERE public_key = ${public_key} and spent = false'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
       res.status(201).json(result.map(objToCamelCase))
     } catch (err) {
