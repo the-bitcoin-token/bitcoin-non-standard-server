@@ -25,13 +25,14 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
     const outputDataObj = JSON.parse(outputData)
 
     const insertIntoTxos =
-      'INSERT INTO Txos(public_key, tx_id, spent) VALUES (${publicKey}, ${txId}, false)'
+      'INSERT INTO Txos(public_key, tx_id, v_out, spent) VALUES (${publicKey}, ${txId}, ${vOut}, false)'
     await Promise.all(
       outputDataObj.map(
-        async element =>
+        async (element, index) =>
           typeof element === 'object'
             ? Db.none(insertIntoTxos, {
                 txId,
+                vOut: index,
                 publicKey: element.publicKeys[0]
               })
             : Promise.resolve()
@@ -62,7 +63,8 @@ app.post(
   '/txos/set-spent/',
   async (req: $Subtype<express$Request>, res: express$Response) => {
     try {
-      const sql = 'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id}'
+      const sql =
+        'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id} AND v_out = ${v_out}'
       await Db.none(sql, objToSnakeCase(req.body))
       res.status(201).json({})
     } catch (err) {
@@ -76,7 +78,7 @@ app.get(
   async (req: $Subtype<express$Request>, res: express$Response) => {
     try {
       const sql =
-        'SELECT tx_id FROM Txos WHERE public_key = ${public_key} and spent = false'
+        'SELECT tx_id, v_out FROM Txos WHERE public_key = ${public_key} and spent = false'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
       res.status(201).json(result.map(objToCamelCase))
     } catch (err) {
