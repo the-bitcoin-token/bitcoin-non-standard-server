@@ -3,6 +3,8 @@
 
 import pgPromise from 'pg-promise'
 
+declare var process: any
+
 export default class Db {
   static _db: Object
 
@@ -12,7 +14,9 @@ export default class Db {
 
     // otherwise create a new connection
     const pgp = pgPromise({})
-    const cn = 'postgres://clemensley:@localhost:5432/unp2sh'
+    const cn = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${
+      process.env.PGHOST
+    }:${process.env.PGPORT}/${process.env.PGDATABASE}`
     this._db = pgp(cn)
   }
 
