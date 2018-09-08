@@ -1,5 +1,4 @@
 // @flow
-import app from '../src/app'
 import * as RestClient from './lib/RestClient'
 
 declare var afterAll: any
@@ -9,17 +8,6 @@ declare var it: any
 declare var expect: any
 
 describe('App', async () => {
-  let server: any
-
-  beforeAll(async () => {
-    await new Promise((resolve, reject) => {
-      server = app.listen(3000, (err?: any) => {
-        if (err) reject(err)
-        else resolve()
-      })
-    })
-  })
-
   describe('postDataOutputs', async () => {
     it('Should issue a post request to store an empty array of data outputs', async () => {
       const random = Math.round(Math.random() * 1000)
@@ -168,17 +156,5 @@ describe('App', async () => {
       exists = res2.find(el => el.txId === data1.txId)
       expect(exists).toBeUndefined()
     })
-  })
-
-  afterAll(async () => {
-    if (server) {
-      const close = new Promise((resolve, reject) => {
-        server.close((err?: any) => {
-          if (err) reject(err)
-          else resolve()
-        })
-      })
-      await close
-    }
   })
 })
