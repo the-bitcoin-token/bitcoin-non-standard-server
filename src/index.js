@@ -3,4 +3,12 @@
 
 import app from './app'
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+declare var process: {
+  env: {
+    PORT: string
+  }
+}
+
+const port = process.env.PORT
+
+app.listen(port, () => console.log(`Un-P2SH listening on port ${port}`))

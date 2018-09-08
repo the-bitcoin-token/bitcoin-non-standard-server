@@ -2,7 +2,13 @@
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_unwrap", "_get", "_post"] }] */
 import axios from 'axios'
 
-const UN_P2SH_URL = 'http://localhost:3000'
+declare var process: {
+  env: {
+    PORT: string
+  }
+}
+
+const UN_P2SH_URL = `http://localhost:${process.env.PORT}`
 
 type DataOutputsType = {|
   txId: string,

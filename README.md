@@ -6,14 +6,14 @@
 
 The following environment variables are expected to be set / available to the application:
 
-| Var        | Example     | Description                       |
-|------------|-------------|-----------------------------------|
-| PGUSER     | clemensley  | Postgres database user            |
-| PGPASSWORD |             | Postgres user password (optional) |
-| PGHOST     | locahost    | Postgres host                     |
-| PGPORT     | 5432        | Postgres listening on port        |
-| PGDATABASE | unp2sh      | Postgres database name            |
-
+| Var        | Example    | Description                       |
+| ---------- | ---------- | --------------------------------- |
+| PORT       | 3000       | Port app should listen on         |
+| PGUSER     | clemensley | Postgres database user            |
+| PGPASSWORD |            | Postgres user password (optional) |
+| PGHOST     | locahost   | Postgres host                     |
+| PGPORT     | 5432       | Postgres listening on port        |
+| PGDATABASE | unp2sh     | Postgres database name            |
 
 ## API
 
