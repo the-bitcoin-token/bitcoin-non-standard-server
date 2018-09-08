@@ -1,5 +1,8 @@
 // @flow
+/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db"] }] */
+
 import * as RestClient from './lib/RestClient'
+import Db from '../src/db'
 
 declare var afterAll: any
 declare var beforeAll: any
@@ -8,6 +11,12 @@ declare var it: any
 declare var expect: any
 
 describe('App', async () => {
+  beforeAll(async () => {
+    Db.getConnection()
+    await Db.dropSchema()
+    await Db.createSchema()
+  })
+
   describe('postDataOutputs', async () => {
     it('Should issue a post request to store an empty array of data outputs', async () => {
       const random = Math.round(Math.random() * 1000)
@@ -156,5 +165,9 @@ describe('App', async () => {
       exists = res2.find(el => el.txId === data1.txId)
       expect(exists).toBeUndefined()
     })
+  })
+
+  afterAll(async () => {
+    Db._db.$pool.end()
   })
 })
