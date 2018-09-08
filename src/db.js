@@ -39,10 +39,10 @@ export default class Db {
   }
 
   static async dropSchema() {
-    const dropUnP2sh = `DROP TABLE UnP2sh;`
+    const dropUnP2sh = `DROP TABLE IF EXISTS UnP2sh;`
     await this._db.none(dropUnP2sh)
 
-    const dropTxos = `DROP TABLE Txos;`
+    const dropTxos = `DROP TABLE IF EXISTS Txos;`
     await this._db.none(dropTxos)
   }
 

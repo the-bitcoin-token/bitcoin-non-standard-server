@@ -22,9 +22,7 @@ describe('Db', async () => {
     try {
       await Db.dropSchema()
     } catch (err) {
-      if (err.message !== 'table "unp2sh" does not exist') {
-        throw err
-      }
+      throw err
     }
   })
 
