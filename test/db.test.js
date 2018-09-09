@@ -1,7 +1,9 @@
 // @flow
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db"] }] */
 
-import Db from '../src/db'
+// Load dot env config before anything else (hence require, not import)
+require('dotenv').config()
+const Db = require('../src/db').default
 
 declare var describe: any
 declare var it: any

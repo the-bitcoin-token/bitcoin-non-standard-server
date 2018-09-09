@@ -3,7 +3,16 @@
 
 import pgPromise from 'pg-promise'
 
-declare var process: any
+declare var process: {
+  env: {
+    UNIT_TESTING: boolean,
+    PGUSER: string,
+    PGPASSWORD: string,
+    PGDATABASE: string,
+    PGHOST: string,
+    PGPORT: number
+  }
+}
 
 export default class Db {
   static _db: Object

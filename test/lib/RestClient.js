@@ -2,6 +2,8 @@
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_unwrap", "_get", "_post"] }] */
 import axios from 'axios'
 
+require('dotenv').config()
+
 declare var process: {
   env: {
     PORT: string

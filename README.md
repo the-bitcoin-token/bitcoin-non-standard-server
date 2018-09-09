@@ -4,7 +4,7 @@
 
 ### Environment variables
 
-The following environment variables are expected to be set / available to the application:
+The following environment variables are expected to be set / available to the application. For development, you can create a file named `.env` in the application root folder with these variables set (e.g. `PORT=3000`) and they will be loaded automatically on server start.  This practice is _not_ recommended for production servers.
 
 | Var        | Example    | Description                       |
 | ---------- | ---------- | --------------------------------- |
