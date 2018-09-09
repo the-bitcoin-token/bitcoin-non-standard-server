@@ -3,6 +3,17 @@
 
 import pgPromise from 'pg-promise'
 
+declare var process: {
+  env: {
+    UNIT_TESTING: boolean,
+    PGUSER: string,
+    PGPASSWORD: string,
+    PGDATABASE: string,
+    PGHOST: string,
+    PGPORT: number
+  }
+}
+
 export default class Db {
   static _db: Object
 
@@ -12,7 +23,9 @@ export default class Db {
 
     // otherwise create a new connection
     const pgp = pgPromise({})
-    const cn = 'postgres://clemensley:@localhost:5432/unp2sh'
+    const cn = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${
+      process.env.PGHOST
+    }:${process.env.PGPORT}/${process.env.PGDATABASE}`
     this._db = pgp(cn)
   }
 
@@ -35,10 +48,10 @@ export default class Db {
   }
 
   static async dropSchema() {
-    const dropUnP2sh = `DROP TABLE UnP2sh;`
+    const dropUnP2sh = `DROP TABLE IF EXISTS UnP2sh;`
     await this._db.none(dropUnP2sh)
 
-    const dropTxos = `DROP TABLE Txos;`
+    const dropTxos = `DROP TABLE IF EXISTS Txos;`
     await this._db.none(dropTxos)
   }
 
