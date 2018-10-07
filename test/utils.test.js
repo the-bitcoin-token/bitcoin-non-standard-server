@@ -69,9 +69,13 @@ describe('Utils', () => {
       }
       const res: Object | string = objToCamelCase(obj)
       expect(typeof res === 'object').toBe(true)
+      // $FlowFixMe
       expect(res.someKey).toBeDefined()
+      // $FlowFixMe
       expect(res.anotherKeyInSnakeCase).toBeDefined()
+      // $FlowFixMe
       expect(res.someKey).toBe('someValue')
+      // $FlowFixMe
       expect(res.anotherKeyInSnakeCase).toBe('anotherValue')
     })
   })

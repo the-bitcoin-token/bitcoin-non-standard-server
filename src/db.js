@@ -55,6 +55,14 @@ export default class Db {
     await this._db.none(dropTxos)
   }
 
+  static async truncateDb() {
+    const truncateUnP2sh = `TRUNCATE UnP2sh;`
+    await this._db.none(truncateUnP2sh)
+
+    const truncateTxos = `TRUNCATE EXISTS Txos;`
+    await this._db.none(truncateTxos)
+  }
+
   static none(...params: Array<any>) {
     return this._db.none(...params)
   }
