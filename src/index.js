@@ -12,4 +12,4 @@ declare var process: {
 }
 
 const port = process.env.PORT
-app.listen(port, () => console.log(`Un-P2SH listening on port ${port}`))
+app.listen(port, () => console.log(`Bitcoin non-standard server listening on port ${port}`))
