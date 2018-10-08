@@ -4,13 +4,14 @@ A simple server to store p2sh script preimages. To be used in conjunction with B
 
 ## Installation
 
-### Clone the project and install dependencies
+### Download and build the project
 
 Type the following into a terminal window.
 
     git clone git@github.com:BitcoinDB/bitcoin-non-standard-server.git
     cd bitcoin-non-standard-server/
     npm install
+    npm run build
 
 ### Install PostgreSQL
 
@@ -18,15 +19,11 @@ See the <a href='https://www.postgresql.org/download/'>PostgreSQL documentation<
 
 ### Create a database
 
-Type `psql` into your console to open the PostgreSQL interactive terminal. To create a new database called `non-standard-db` type in
+Type `psql` into your console to open the PostgreSQL interactive terminal. To create a new database called `non-standard-db` and create the schema copy and paste the following into the terminal.
 
-    CREATE DATABASE nonStandardDb;
-
-Connect to the database
+    CREATE DATABASE non_standard_db;
 
     \connect non_standard_db;
-
-Create the database schema
 
     CREATE TABLE UnP2sh (
       tx_id varchar(64) primary key,
@@ -41,7 +38,7 @@ Create the database schema
       spent boolean NOT NULL
     );
 
-You can type `\d` to check that the tables have been created. If everything went well you can exit the PostgreSQL interactive terminal by typing `\q`.
+You can type `\d` to check that tables ```UnP2sh``` and ```Txos``` have been created. If everything went well you can exit the PostgreSQL interactive terminal by typing `\q`.
 
 ### Set up environment variables
 
@@ -63,6 +60,10 @@ To start the server type
 If everything went well, you should see the following output
 
     Bitcoin non-standard server listening on port 3000
+
+### Test
+
+To run the unit tests start the server by running ```npm run serve``` in one terminal window. Then open a second terminal and run ```npm test```.
 
 ### Get help
 
