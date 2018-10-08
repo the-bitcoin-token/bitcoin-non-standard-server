@@ -27,7 +27,7 @@
     "postdocs": "git add README.md",
     "clean": "rimraf dist",
     "flowbuild": "flow-copy-source src dist",
-    "prebuild": "npm run docs && npm run clean && npm run flowbuild",
+    "prebuild": "npm run clean && npm run flowbuild",
     "build": "babel src -d dist",
     "preversion": "npm run lint && npm test && npm run build",
     "version": "standard-changelog && git add CHANGELOG.md",
