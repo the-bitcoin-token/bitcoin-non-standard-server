@@ -4,54 +4,45 @@ A simple server to store p2sh script preimages. To be used in conjunction with B
 
 ## Installation
 
-### Download and build the project
+### Using Docker Compose
+
+Assuming [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) are installed on the system run:
+
+    git clone https://github.com/BitcoinDB/bitcoin-non-standard-server.git
+    cd bitcoin-non-standard-server/
+    docker-compose up
+    
+After the compose has built the containers and started the stack the Bitcoin non standard server should be listening on localhost:3000.
+
+### Manually 
+
+#### Download and build the project
 
 Type the following into a terminal window.
 
-    git clone git@github.com:BitcoinDB/bitcoin-non-standard-server.git
+    git clone https://github.com/BitcoinDB/bitcoin-non-standard-server.git
     cd bitcoin-non-standard-server/
     npm install
     npm run build
 
-### Install PostgreSQL
+#### Install PostgreSQL
 
 See the <a href='https://www.postgresql.org/download/'>PostgreSQL documentation</a> for instructions
 
-### Create a database
+#### Set up database connection
 
-Type `psql` into your console to open the PostgreSQL interactive terminal. To create a new database called `non-standard-db` and create the schema copy and paste the following into the terminal.
+Copy the `.env.example` file to `.env` and set the Postgres credentials (database name, user, pass, ...) in it. 
 
-    CREATE DATABASE non_standard_db;
+#### Create a database
 
-    \connect non_standard_db;
+   npm run init
 
-    CREATE TABLE UnP2sh (
-      tx_id varchar(64) primary key,
-      output_data text NOT NULL
-    );
+If the database creation completed successfully you should see
 
-    CREATE TABLE Txos (
-      id SERIAL,
-      public_key varchar(66) NOT NULL,
-      tx_id varchar(64) NOT NULL,
-      v_out integer NOT NULL,
-      spent boolean NOT NULL
-    );
+    Created database bitcoin_non_standard.
+    Successfully created required database tables.
 
-You can type `\d` to check that tables ```UnP2sh``` and ```Txos``` have been created. If everything went well you can exit the PostgreSQL interactive terminal by typing `\q`.
-
-### Set up environment variables
-
-Create a file called `.env` in the root directory with the following content
-
-    PORT=3000
-    PGUSER=<your PostgreSQL username>
-    PGPASSWORD=<your PostgreSQL password>
-    PGHOST=localhost
-    PGPORT=5432
-    PGDATABASE=non_standard_db
-
-### Start the server
+#### Start the server
 
 To start the server type
 

@@ -1,0 +1,23 @@
+version: '3.1'
+
+volumes:
+  postgres-data:
+services:
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: bitcoin
+      POSTGRES_USER: bitcoin
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    build: ./docker
+    ports: 
+      - 3000:3000
+    links:
+      - postgres
+    depends_on:
+      - postgres
