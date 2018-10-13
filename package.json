@@ -31,7 +31,8 @@
     "build": "babel src -d dist",
     "preversion": "npm run lint && npm test && npm run build",
     "version": "standard-changelog && git add CHANGELOG.md",
-    "postpublish": "git push origin master --follow-tags"
+    "postpublish": "git push origin master --follow-tags",
+    "init": "node scripts/init.js"
   },
   "jest": {
     "testEnvironment": "node"
