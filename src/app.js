@@ -30,19 +30,39 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
         async (element, index) =>
           typeof element === 'object'
             ? Db.none(insertIntoTxos, {
-                txId,
-                vOut: index,
-                publicKey: element.publicKeys[0]
-              })
+              txId,
+              vOut: index,
+              publicKey: element.publicKeys[0]
+            })
             : Promise.resolve()
       )
     )
 
-    res.status(201).json({})
+    res
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Methods', 'POST')
+      .status(201)
+      .json({})
   } catch (err) {
-    res.status(400).json({ error: err.message })
+    res
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Methods', 'POST')
+      .status(500)
+      .json({ error: err.message })
   }
 })
+
+app.options(
+  '/',
+  async (req: $Subtype<express$Request>, res: express$Response) => {
+    res
+      .set('Allow', 'POST')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Methods', 'POST')
+      .status(200)
+      .json({})
+  }
+)
 
 app.get(
   '/un-p2sh/:txId',
@@ -51,10 +71,30 @@ app.get(
       const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
       const data = JSON.parse(result[0].output_data)
-      res.status(201).json(data.map(objToCamelCase))
+      res
+        .set('Access-Control-Allow-Origin', '*')
+        .set('Access-Control-Allow-Methods', 'GET')
+        .status(200)
+        .json(data.map(objToCamelCase))
     } catch (err) {
-      res.status(400).json({ error: err.message })
+      res
+        .set('Access-Control-Allow-Origin', '*')
+        .set('Access-Control-Allow-Methods', 'GET')
+        .status(404)
+        .json({ error: err.message })
     }
+  }
+)
+
+app.options(
+  '/un-p2sh/:txId',
+  async (req: $Subtype<express$Request>, res: express$Response) => {
+    res
+      .set('Allow', 'GET')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Methods', 'GET')
+      .status(200)
+      .json({})
   }
 )
 
@@ -65,10 +105,30 @@ app.post(
       const sql =
         'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id} AND v_out = ${v_out}'
       await Db.none(sql, objToSnakeCase(req.body))
-      res.status(201).json({})
+      res
+        .set('Access-Control-Allow-Origin', '*')
+        .set('Access-Control-Allow-Methods', 'POST')
+        .status(201)
+        .json({})
     } catch (err) {
-      res.status(400).json({ error: err.message })
+      res
+        .set('Access-Control-Allow-Origin', '*')
+        .set('Access-Control-Allow-Methods', 'POST')
+        .status(500)
+        .json({ error: err.message })
     }
+  }
+)
+
+app.options(
+  '/txos/set-spent/',
+  async (req: $Subtype<express$Request>, res: express$Response) => {
+    res
+      .set('Allow', 'POST')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Methods', 'POST')
+      .status(200)
+      .json({})
   }
 )
 
@@ -79,10 +139,30 @@ app.get(
       const sql =
         'SELECT tx_id, v_out FROM Txos WHERE public_key = ${public_key} and spent = false'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
-      res.status(201).json(result.map(objToCamelCase))
+      res
+        .set('Access-Control-Allow-Origin', '*')
+        .set('Access-Control-Allow-Methods', 'GET')
+        .status(200)
+        .json(result.map(objToCamelCase))
     } catch (err) {
-      res.status(400).json({ error: err.message })
+      res
+        .set('Access-Control-Allow-Origin', '*')
+        .set('Access-Control-Allow-Methods', 'GET')
+        .status(404)
+        .json({ error: err.message })
     }
+  }
+)
+
+app.options(
+  '/txos/:publicKey',
+  async (req: $Subtype<express$Request>, res: express$Response) => {
+    res
+      .set('Allow', 'GET')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Methods', 'GET')
+      .status(200)
+      .json({})
   }
 )
 

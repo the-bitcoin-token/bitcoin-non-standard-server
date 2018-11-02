@@ -14,8 +14,8 @@ const UN_P2SH_URL = `http://localhost:${process.env.PORT}`
 
 type DataOutputsType = {|
   txId: string,
-  outputData: string
-|}
+    outputData: string
+      |}
 
 /**
  * Executes an axios request and unwraps either the resulting response or error.
@@ -27,7 +27,7 @@ type DataOutputsType = {|
 export const _unwrap = async (request: Promise<any>): Promise<any> => {
   try {
     const response = await request
-    return response.data
+    return response
   } catch (error) {
     if (error.response) {
       const { status, statusText, data } = error.response
@@ -52,6 +52,15 @@ export const _get = async (route: string, baseUrl: string): Promise<any> =>
   _unwrap(axios.get(`${baseUrl}${route}`))
 
 /**
+ * Executes an options request to the given route. Throws an Error if the
+ * request or the communication fails.
+ *
+ * @throws {Error}
+ */
+export const _options = async (route: string, baseUrl: string): Promise<any> =>
+  _unwrap(axios.options(`${baseUrl}${route}`))
+
+/**
  * Executes a post request to the given route with the given data as body.
  * Throws an Error if the request or the communication fails.
  *
@@ -63,6 +72,8 @@ export const _post = async (
   data: Object,
   baseUrl: string
 ): Promise<any> => _unwrap(axios.post(`${baseUrl}${route}`, data))
+
+export const getOptions = async (route: string) => _options(route, UN_P2SH_URL)
 
 export const postDataOutputs = async (data: DataOutputsType) =>
   _post('/', data, UN_P2SH_URL)
