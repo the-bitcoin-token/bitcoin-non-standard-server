@@ -183,7 +183,7 @@ describe('App', async () => {
   })
 
   describe('setTxoSpent', async () => {
-    it('Should return CORS headers on OPTIONS request', async () => {
+    it.only('Should return CORS headers on OPTIONS request', async () => {
       const res = await RestClient.getOptions(`/txos/set-spent/`)
       expect(res.headers.allow).toEqual('POST')
       expect(res.headers['access-control-allow-origin']).toEqual('*')

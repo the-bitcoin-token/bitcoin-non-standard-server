@@ -30,10 +30,10 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
         async (element, index) =>
           typeof element === 'object'
             ? Db.none(insertIntoTxos, {
-              txId,
-              vOut: index,
-              publicKey: element.publicKeys[0]
-            })
+                txId,
+                vOut: index,
+                publicKey: element.publicKeys[0]
+              })
             : Promise.resolve()
       )
     )
@@ -70,7 +70,11 @@ app.get(
     try {
       const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
-      const data = JSON.parse(result[0].output_data)
+      const data =
+        result.length && result[0].output_data
+          ? JSON.parse(result[0].output_data)
+          : ['no_data']
+
       res
         .set('Access-Control-Allow-Origin', '*')
         .set('Access-Control-Allow-Methods', 'GET')

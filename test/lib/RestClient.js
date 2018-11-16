@@ -1,5 +1,5 @@
 // @flow
-/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_unwrap", "_get", "_post"] }] */
+/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_unwrap", "_get", "_post", "_options"] }] */
 import axios from 'axios'
 
 require('dotenv').config()
@@ -14,8 +14,8 @@ const UN_P2SH_URL = `http://localhost:${process.env.PORT}`
 
 type DataOutputsType = {|
   txId: string,
-    outputData: string
-      |}
+  outputData: string
+|}
 
 /**
  * Executes an axios request and unwraps either the resulting response or error.
