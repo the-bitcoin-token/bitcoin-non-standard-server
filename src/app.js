@@ -27,14 +27,15 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
       'INSERT INTO Txos(public_key, tx_id, v_out, spent) VALUES (${publicKey}, ${txId}, ${vOut}, false)'
     await Promise.all(
       outputDataObj.map(
-        async (element, index) =>
-          typeof element === 'object'
+        async (element, index) => {
+          element.kind === 'script'
             ? Db.none(insertIntoTxos, {
                 txId,
                 vOut: index,
                 publicKey: element.publicKeys[0]
               })
             : Promise.resolve()
+        }
       )
     )
 
@@ -70,16 +71,16 @@ app.get(
     try {
       const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
       const result: Array<any> = await Db.any(sql, objToSnakeCase(req.params))
-      const data =
-        result.length && result[0].output_data
-          ? JSON.parse(result[0].output_data)
-          : ['no_data']
-
-      res
-        .set('Access-Control-Allow-Origin', '*')
-        .set('Access-Control-Allow-Methods', 'GET')
-        .status(200)
-        .json(data.map(objToCamelCase))
+      if (result.length && result[0].output_data) {
+        const data = JSON.parse(result[0].output_data)
+        res
+          .set('Access-Control-Allow-Origin', '*')
+          .set('Access-Control-Allow-Methods', 'GET')
+          .status(200)
+          .json(data.map(objToCamelCase))
+      } else { 
+        throw new Error(`no data found for txId ${req.params.txId}`)
+      }
     } catch (err) {
       res
         .set('Access-Control-Allow-Origin', '*')
