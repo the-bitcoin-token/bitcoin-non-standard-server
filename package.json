@@ -1,6 +1,6 @@
 {
   "name": "generator-nod",
-  "version": "0.0.1",
+  "version": "v0.2.0-alpha.0",
   "description": "My node module",
   "license": "MIT",
   "repository": "diegohaz/nod",
