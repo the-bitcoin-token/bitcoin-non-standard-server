@@ -57,8 +57,11 @@ export const _get = async (route: string, baseUrl: string): Promise<any> =>
  *
  * @throws {Error}
  */
-export const _options = async (route: string, baseUrl: string): Promise<any> =>
-  _unwrap(axios.options(`${baseUrl}${route}`))
+export const _options = async (route: string, baseUrl: string): Promise<any> => {
+  console.log(`${baseUrl}${route}`)
+  return   _unwrap(axios.options(`${baseUrl}${route}`))
+
+}
 
 /**
  * Executes a post request to the given route with the given data as body.

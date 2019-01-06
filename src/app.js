@@ -32,7 +32,7 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
             ? Db.none(insertIntoTxos, {
                 txId,
                 vOut: index,
-                publicKey: element.publicKeys[0]
+                publicKey: element.__publicKeys[0]
               })
             : Promise.resolve()
         }

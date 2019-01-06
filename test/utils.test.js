@@ -36,6 +36,8 @@ describe('Utils', () => {
       expect(toSnakeCase('someString')).toBe('some_string')
       expect(toSnakeCase('SomeString')).toBe('some_string')
       expect(toSnakeCase('editor1StateDraft')).toBe('editor_1_state_draft')
+      expect(toSnakeCase('_test')).toBe('_test')
+      expect(toSnakeCase('__publicKey')).toBe('__public_key')
     })
   })
 
@@ -44,6 +46,8 @@ describe('Utils', () => {
       expect(toCamelCase('some_string')).toBe('someString')
       expect(toCamelCase('some_string_S')).toBe('someStringS')
       expect(toCamelCase('editor_1_state_draft')).toBe('editor1StateDraft')
+      expect(toCamelCase('_test')).toBe('_test')
+      expect(toCamelCase('__public_key')).toBe('__publicKey')
     })
   })
 
@@ -62,10 +66,11 @@ describe('Utils', () => {
   })
 
   describe('objToCamelCase', () => {
-    it.only('should handle these known cases', () => {
+    it('should handle these known cases', () => {
       const obj = {
         some_key: 'someValue',
-        another_key_in_snake_case: 'anotherValue'
+        another_key_in_snake_case: 'anotherValue',
+        __two_underscores: 'twoUnderscores'
       }
       const res: Object | string = objToCamelCase(obj)
       expect(typeof res === 'object').toBe(true)

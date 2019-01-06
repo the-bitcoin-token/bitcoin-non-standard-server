@@ -37,7 +37,7 @@ describe('Db', async () => {
   })
 
   describe('createSchema', async () => {
-    it.only('should create the UnP2sh table', async () => {
+    it('should create the UnP2sh table', async () => {
       await Db.createSchema()
       const data = await Db._db.none('SELECT * FROM UnP2sh;')
       expect(data).toBe(null)

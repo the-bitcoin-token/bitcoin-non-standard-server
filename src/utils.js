@@ -7,20 +7,31 @@ export const isLowerCase = (string: string) =>
 export const isUpperCase = (string: string) => !isLowerCase(string)
 
 export const toSnakeCase = (string: string) => {
-  let res = string[0].toLowerCase()
-  for (let i = 1; i < string.length; i += 1) {
+  let i = 0
+  // initialize i to the number of leading underscores
+  while (string[i] === '_') i++
+  // skip to the end of the underscores
+  let res = string.slice(0, i)
+  res += string[i++].toLowerCase()
+  while(i < string.length) {
     res +=
       isUpperCase(string[i]) && i > 0
         ? `_${string[i].toLowerCase()}`
         : string[i]
+    i += 1
   }
   return res
 }
 
 export const toCamelCase = (string: string) => {
-  let res = ''
-  for (let i = 0; i < string.length; i += 1) {
+  let i = 0
+  // initialize i to the number of leading underscores
+  while (string[i] === '_') i++
+  // skip to the end of the underscores
+  let res = string.slice(0, i)
+  while(i < string.length) {
     res += string[i] === '_' ? string[++i].toUpperCase() : string[i]
+    i += 1
   }
   return res
 }
