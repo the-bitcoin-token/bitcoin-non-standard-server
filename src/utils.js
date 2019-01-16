@@ -13,7 +13,7 @@ export const toSnakeCase = (string: string) => {
   // skip to the end of the underscores
   let res = string.slice(0, i)
   res += string[i++].toLowerCase()
-  while(i < string.length) {
+  while (i < string.length) {
     res +=
       isUpperCase(string[i]) && i > 0
         ? `_${string[i].toLowerCase()}`
@@ -29,7 +29,7 @@ export const toCamelCase = (string: string) => {
   while (string[i] === '_') i++
   // skip to the end of the underscores
   let res = string.slice(0, i)
-  while(i < string.length) {
+  while (i < string.length) {
     res += string[i] === '_' ? string[++i].toUpperCase() : string[i]
     i += 1
   }

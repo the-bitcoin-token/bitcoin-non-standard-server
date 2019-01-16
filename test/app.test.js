@@ -156,13 +156,14 @@ describe('App', async () => {
       const data = {
         txId: `txId${random}`,
         outputData: `[
-          {"publicKeys":["${publicKeyHex1}"],"data":["${dataString1}"]},
-          {"publicKeys":["${publicKeyHex2}"],"data":["${dataString2}"]}
+          {"__publicKeys":["${publicKeyHex1}"],"data":["${dataString1}"], "kind": "script"},
+          {"__publicKeys":["${publicKeyHex2}"],"data":["${dataString2}"], "kind": "script"}
         ]`
       }
       await RestClient.postDataOutputs(data)
 
       const res1 = await RestClient.getTokenUtxos(publicKeyHex1)
+
       expect(res1.data).toBeDefined()
       expect(res1.data.length).toBe(1)
       expect(res1.data[0].txId).toBe(data.txId)
@@ -198,11 +199,11 @@ describe('App', async () => {
       const dataString = 'a'
       const data1 = {
         txId: `txId${random1}`,
-        outputData: `[{"publicKeys":["${publicKeyHex}"],"data":["${dataString}"]}]`
+        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "kind": "script"}]`
       }
       const data2 = {
         txId: `txId${random2}`,
-        outputData: `[{"publicKeys":["${publicKeyHex}"],"data":["${dataString}"]}]`
+        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "kind": "script"}]`
       }
 
       await RestClient.postDataOutputs(data1)

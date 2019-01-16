@@ -52,7 +52,7 @@ describe('Db', async () => {
     })
   })
 
-  describe('dropSchema', async () => {
+  describe.skip('dropSchema', async () => {
     it('should drop the UnP2sh table', async () => {
       // querying UnP2sh should throw an error if it does not exist yet
       await expect(Db._db.none('SELECT * FROM UnP2sh;')).rejects.toThrow(

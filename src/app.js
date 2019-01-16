@@ -1,5 +1,5 @@
 // @flow
-/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db"] }] */
+/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db", "__publicKeys", "__amount"] }] */
 /* eslint no-template-curly-in-string: "off" */
 
 import express from 'express'
@@ -27,7 +27,7 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
       'INSERT INTO Txos(public_key, tx_id, v_out, spent) VALUES (${publicKey}, ${txId}, ${vOut}, false)'
     await Promise.all(
       outputDataObj.map(
-        async (element, index) => {
+        async (element, index) =>
           element.kind === 'script'
             ? Db.none(insertIntoTxos, {
                 txId,
@@ -35,7 +35,6 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
                 publicKey: element.__publicKeys[0]
               })
             : Promise.resolve()
-        }
       )
     )
 
@@ -78,7 +77,7 @@ app.get(
           .set('Access-Control-Allow-Methods', 'GET')
           .status(200)
           .json(data.map(objToCamelCase))
-      } else { 
+      } else {
         throw new Error(`no data found for txId ${req.params.txId}`)
       }
     } catch (err) {
