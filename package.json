@@ -1,14 +1,14 @@
 {
-  "name": "generator-nod",
+  "name": "bitcoin-non-standard-server",
   "version": "0.2.1-alpha.0",
   "description": "My node module",
   "license": "MIT",
-  "repository": "diegohaz/nod",
+  "repository": "ClemensLey/bitcoin-non-standard-server",
   "main": "dist/index.js",
   "author": {
-    "name": "Diego Haz",
-    "email": "hazdiego@gmail.com",
-    "url": "https://github.com/diegohaz"
+    "name": "Clemens Ley",
+    "email": "ley.clemens@gmail.com",
+    "url":"https://github.com/ClemensLey"
   },
   "engines": {
     "node": ">=6"
