@@ -26,7 +26,7 @@ describe('App', async () => {
     })
 
     it('Should issue a post request to store an empty array of data outputs', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const data = {
         txId: `txId${random}`,
         outputData: '[]'
@@ -40,7 +40,7 @@ describe('App', async () => {
     })
 
     it('Should issue a post request to store a singleton array of data outputs', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const data = {
         txId: `txId${random}`,
         outputData: '[{"publicKeys":["abc"],"data":["a"]}]'
@@ -54,7 +54,7 @@ describe('App', async () => {
     })
 
     it('Should issue a post request to store a longer array of data outputs', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const data = {
         txId: `txId${random}`,
         outputData:
@@ -71,7 +71,7 @@ describe('App', async () => {
 
   describe('getDataOutputs', async () => {
     it('Should return CORS headers on OPTIONS request', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const res = await RestClient.getOptions(`/un-p2sh/txId${random}`)
       expect(res.headers.allow).toEqual('GET')
       expect(res.headers['access-control-allow-origin']).toEqual('*')
@@ -79,7 +79,7 @@ describe('App', async () => {
     })
 
     it('Should retrieve empty data outputs from the server', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const data = {
         txId: `txId${random}`,
         outputData: '[]'
@@ -95,7 +95,7 @@ describe('App', async () => {
     })
 
     it('Should retrieve non empty data outputs from the server', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const publicKeyHex =
         '0240479435fb455e40cca98fc37d497ae36fc91b6f426ca30e651bc27a36c70d99'
       const dataString = 'a'
@@ -124,7 +124,7 @@ describe('App', async () => {
 
   describe('getTokenUtxos', async () => {
     it('Should return CORS headers on OPTIONS request', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const res = await RestClient.getOptions(`/txos/${random}`)
       expect(res.headers.allow).toEqual('GET')
       expect(res.headers['access-control-allow-origin']).toEqual('*')
@@ -132,7 +132,7 @@ describe('App', async () => {
     })
 
     it('Should retrieve empty txos from the server', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const data = {
         txId: `txId${random}`,
         outputData: '[]'
@@ -148,7 +148,7 @@ describe('App', async () => {
     })
 
     it('Should retrieve non empty txos from the server', async () => {
-      const random = Math.round(Math.random() * 1000)
+      const random = Math.round(Math.random() * 100000)
       const publicKeyHex1 = `publicKeyHex1${random}`
       const dataString1 = 'a'
       const publicKeyHex2 = `publicKeyHex2${random}`
@@ -156,8 +156,8 @@ describe('App', async () => {
       const data = {
         txId: `txId${random}`,
         outputData: `[
-          {"__publicKeys":["${publicKeyHex1}"],"data":["${dataString1}"], "kind": "script"},
-          {"__publicKeys":["${publicKeyHex2}"],"data":["${dataString2}"], "kind": "script"}
+          {"__publicKeys":["${publicKeyHex1}"],"data":["${dataString1}"], "__kind": "script"},
+          {"__publicKeys":["${publicKeyHex2}"],"data":["${dataString2}"], "__kind": "script"}
         ]`
       }
       await RestClient.postDataOutputs(data)
@@ -192,18 +192,18 @@ describe('App', async () => {
     })
 
     it('Should set "spent" to true on the server side db', async () => {
-      const random1 = Math.round(Math.random() * 1000)
-      const random2 = Math.round(Math.random() * 1000)
+      const random1 = Math.round(Math.random() * 100000)
+      const random2 = Math.round(Math.random() * 100000)
       const publicKeyHex =
         '0240479435fb455e40cca98fc37d497ae36fc91b6f426ca30e651bc27a36c70d99'
       const dataString = 'a'
       const data1 = {
         txId: `txId${random1}`,
-        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "kind": "script"}]`
+        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "__kind": "script"}]`
       }
       const data2 = {
         txId: `txId${random2}`,
-        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "kind": "script"}]`
+        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "__kind": "script"}]`
       }
 
       await RestClient.postDataOutputs(data1)

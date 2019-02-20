@@ -1,5 +1,5 @@
 // @flow
-/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db", "__publicKeys", "__amount"] }] */
+/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db", "__publicKeys", "__amount", "__kind"] }] */
 /* eslint no-template-curly-in-string: "off" */
 
 import express from 'express'
@@ -28,7 +28,7 @@ app.post('/', async (req: $Subtype<express$Request>, res: express$Response) => {
     await Promise.all(
       outputDataObj.map(
         async (element, index) =>
-          element.kind === 'script'
+          element.__kind === 'script'
             ? Db.none(insertIntoTxos, {
                 txId,
                 vOut: index,
