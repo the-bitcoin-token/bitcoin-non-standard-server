@@ -1,7 +1,7 @@
 FROM node:alpine
 
 RUN apk add --no-cache --virtual .build-deps git openssh-client \
-  && git clone https://github.com/BitcoinDB/bitcoin-non-standard-server.git \
+  && git clone https://github.com/the-bitcoin-token/bitcoin-non-standard-server.git \
   && cd bitcoin-non-standard-server/ \
   && npm install \
   && npm run build  \
