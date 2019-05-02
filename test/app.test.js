@@ -18,13 +18,6 @@ describe('App', async () => {
   })
 
   describe('postDataOutputs', async () => {
-    it('Should return CORS headers on OPTIONS request', async () => {
-      const res = await RestClient.getOptions('/')
-      expect(res.headers.allow).toEqual('POST')
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('POST')
-    })
-
     it('Should issue a post request to store an empty array of data outputs', async () => {
       const random = Math.round(Math.random() * 100000)
       const data = {
@@ -34,8 +27,6 @@ describe('App', async () => {
 
       const res = await RestClient.postDataOutputs(data)
       expect(res.data).toEqual({})
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('POST')
       expect(res.status).toEqual(201)
     })
 
@@ -48,8 +39,6 @@ describe('App', async () => {
 
       const res = await RestClient.postDataOutputs(data)
       expect(res.data).toEqual({})
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('POST')
       expect(res.status).toEqual(201)
     })
 
@@ -63,21 +52,11 @@ describe('App', async () => {
 
       const res = await RestClient.postDataOutputs(data)
       expect(res.data).toEqual({})
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('POST')
       expect(res.status).toEqual(201)
     })
   })
 
   describe('getDataOutputs', async () => {
-    it('Should return CORS headers on OPTIONS request', async () => {
-      const random = Math.round(Math.random() * 100000)
-      const res = await RestClient.getOptions(`/un-p2sh/txId${random}`)
-      expect(res.headers.allow).toEqual('GET')
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('GET')
-    })
-
     it('Should retrieve empty data outputs from the server', async () => {
       const random = Math.round(Math.random() * 100000)
       const data = {
@@ -89,8 +68,6 @@ describe('App', async () => {
       const res = await RestClient.getDataOutputs(data.txId)
       expect(res.data).toBeDefined()
       expect(res.data.length).toBe(0)
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('GET')
       expect(res.status).toEqual(200)
     })
 
@@ -116,21 +93,11 @@ describe('App', async () => {
       expect(res.data[0].data).toBeDefined()
       expect(res.data[0].data.length).toBeDefined()
       expect(res.data[0].data[0]).toBe(dataString)
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('GET')
       expect(res.status).toEqual(200)
     })
   })
 
   describe('getTokenUtxos', async () => {
-    it('Should return CORS headers on OPTIONS request', async () => {
-      const random = Math.round(Math.random() * 100000)
-      const res = await RestClient.getOptions(`/txos/${random}`)
-      expect(res.headers.allow).toEqual('GET')
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('GET')
-    })
-
     it('Should retrieve empty txos from the server', async () => {
       const random = Math.round(Math.random() * 100000)
       const data = {
@@ -142,8 +109,6 @@ describe('App', async () => {
       const res = await RestClient.getTokenUtxos(data.txId)
       expect(res.data).toBeDefined()
       expect(res.data.length).toBe(0)
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('GET')
       expect(res.status).toEqual(200)
     })
 
@@ -168,8 +133,6 @@ describe('App', async () => {
       expect(res1.data.length).toBe(1)
       expect(res1.data[0].txId).toBe(data.txId)
       expect(res1.data[0].vOut).toBe(0)
-      expect(res1.headers['access-control-allow-origin']).toEqual('*')
-      expect(res1.headers['access-control-allow-methods']).toEqual('GET')
       expect(res1.status).toEqual(200)
 
       const res2 = await RestClient.getTokenUtxos(publicKeyHex2)
@@ -177,20 +140,11 @@ describe('App', async () => {
       expect(res2.data.length).toBe(1)
       expect(res2.data[0].txId).toBe(data.txId)
       expect(res2.data[0].vOut).toBe(1)
-      expect(res2.headers['access-control-allow-origin']).toEqual('*')
-      expect(res2.headers['access-control-allow-methods']).toEqual('GET')
       expect(res2.status).toEqual(200)
     })
   })
 
   describe('setTxoSpent', async () => {
-    it('Should return CORS headers on OPTIONS request', async () => {
-      const res = await RestClient.getOptions(`/txos/set-spent/`)
-      expect(res.headers.allow).toEqual('POST')
-      expect(res.headers['access-control-allow-origin']).toEqual('*')
-      expect(res.headers['access-control-allow-methods']).toEqual('POST')
-    })
-
     it('Should set "spent" to true on the server side db', async () => {
       const random1 = Math.round(Math.random() * 100000)
       const random2 = Math.round(Math.random() * 100000)
@@ -210,20 +164,15 @@ describe('App', async () => {
       await RestClient.postDataOutputs(data2)
 
       const res1 = await RestClient.getTokenUtxos(publicKeyHex)
-      expect(res1.headers['access-control-allow-origin']).toEqual('*')
-      expect(res1.headers['access-control-allow-methods']).toEqual('GET')
       expect(res1.status).toEqual(200)
 
       let exists = res1.data.find(el => el.txId === data1.txId)
       expect(exists).toBeDefined()
 
       const resSpent = await RestClient.setTxoSpent(data1.txId, 0)
-      expect(resSpent.headers['access-control-allow-origin']).toEqual('*')
-      expect(resSpent.headers['access-control-allow-methods']).toEqual('POST')
       expect(resSpent.status).toEqual(201)
+
       const res2 = await RestClient.getTokenUtxos(publicKeyHex)
-      expect(res2.headers['access-control-allow-origin']).toEqual('*')
-      expect(res2.headers['access-control-allow-methods']).toEqual('GET')
       expect(res2.status).toEqual(200)
 
       exists = res2.data.find(el => el.txId === data1.txId)
