@@ -1,12 +1,12 @@
 // @flow
 /* eslint no-plusplus: "off" */
 
-export const isLowerCase = (string: string) =>
+export const isLowerCase = (string: string): boolean =>
   string === string.toLowerCase() && string !== string.toUpperCase()
 
-export const isUpperCase = (string: string) => !isLowerCase(string)
+export const isUpperCase = (string: string): boolean => !isLowerCase(string)
 
-export const toSnakeCase = (string: string) => {
+export const toSnakeCase = (string: string): string => {
   let i = 0
   // initialize i to the number of leading underscores
   while (string[i] === '_') i++
@@ -23,7 +23,7 @@ export const toSnakeCase = (string: string) => {
   return res
 }
 
-export const toCamelCase = (string: string) => {
+export const toCamelCase = (string: string): string => {
   let i = 0
   // initialize i to the number of leading underscores
   while (string[i] === '_') i++
@@ -36,7 +36,7 @@ export const toCamelCase = (string: string) => {
   return res
 }
 
-export const objToSnakeCase = (obj: Object) => {
+export const objToSnakeCase = (obj: Object): Object => {
   const newObj = {}
   Object.entries(obj).forEach(([key, value]) => {
     newObj[toSnakeCase(key)] = value
@@ -44,8 +44,7 @@ export const objToSnakeCase = (obj: Object) => {
   return newObj
 }
 
-export const objToCamelCase = (obj: Object | string) => {
-  if (typeof obj === 'string') return obj
+export const objToCamelCase = (obj: Object): Object => {
   const newObj = {}
   Object.entries(obj).forEach(([key, value]) => {
     newObj[toCamelCase(key)] = value
