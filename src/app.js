@@ -27,6 +27,10 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
+/**
+ * Stores the output data of a new transaction in the UnP2sh table
+ * and adds the new unspent outputs to the Txos table.
+ */
 app.post('/', async ({ body }: $Request, res: $Response) => {
   try {
     if (!body || typeof body !== 'object')
@@ -60,6 +64,26 @@ app.post('/', async ({ body }: $Request, res: $Response) => {
   }
 })
 
+/**
+ * Marks a transaction output as spent in the Txos table.
+ */
+app.post('/txos/set-spent/', async ({ body }: $Request, res: $Response) => {
+  if (!body || typeof body !== 'object')
+    throw new Error('Parameter must be an object')
+
+  try {
+    const sql =
+      'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id} AND v_out = ${v_out}'
+    await Db.none(sql, objToSnakeCase(body))
+    res.status(201).json({})
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+/**
+ * Returns the output data for a given transaction id from the UnP2sh table.
+ */
 app.get('/un-p2sh/:txId', async ({ params }: $Request, res: $Response) => {
   try {
     const sql = 'SELECT output_data FROM UnP2sh WHERE tx_id = ${tx_id}'
@@ -75,20 +99,9 @@ app.get('/un-p2sh/:txId', async ({ params }: $Request, res: $Response) => {
   }
 })
 
-app.post('/txos/set-spent/', async ({ body }: $Request, res: $Response) => {
-  if (!body || typeof body !== 'object')
-    throw new Error('Parameter must be an object')
-
-  try {
-    const sql =
-      'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id} AND v_out = ${v_out}'
-    await Db.none(sql, objToSnakeCase(body))
-    res.status(201).json({})
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-})
-
+/**
+ * Returns the unspent transaction output for a given public key from the Txos table.
+ */
 app.get('/txos/:publicKey', async ({ params }: $Request, res: $Response) => {
   try {
     const sql =
