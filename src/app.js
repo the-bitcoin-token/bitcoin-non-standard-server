@@ -3,15 +3,26 @@
 /* eslint no-template-curly-in-string: "off" */
 
 import cors from 'cors'
-import type { $Request, $Response } from 'express'
-
 import express from 'express'
 import bodyParser from 'body-parser'
+import type { $Request, $Response } from 'express'
+import WebSocket from 'ws'
+
 import Db from './db'
 import { objToSnakeCase, objToCamelCase } from './utils'
 
 Db.getConnection()
 
+// Web socket
+const wss = new WebSocket.Server({ port: 8080 })
+
+wss.on('connection', ws => {
+  ws.on('message', msg => {
+    ws.send(msg)
+  })
+})
+
+// Http server
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())

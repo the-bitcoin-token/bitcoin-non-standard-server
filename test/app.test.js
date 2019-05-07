@@ -1,6 +1,7 @@
 // @flow
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db"] }] */
 
+import WebSocket from 'isomorphic-ws'
 import * as RestClient from './lib/RestClient'
 import Db from '../src/db'
 
@@ -10,11 +11,28 @@ declare var describe: any
 declare var it: any
 declare var expect: any
 
+const msg = Math.random().toString()
+
 describe('App', async () => {
   beforeAll(async () => {
     Db.getConnection()
     await Db.dropSchema()
     await Db.createSchema()
+  })
+
+  describe('web socket', async () => {
+    it('should respond to a simple message', async done => {
+      const ws = new WebSocket('ws://localhost:8080')
+
+      ws.on('open', () => {
+        ws.send(msg)
+      })
+      ws.on('close', () => done())
+      ws.on('message', data => {
+        expect(data).toBe(msg)
+        ws.close()
+      })
+    })
   })
 
   describe('postDataOutputs', async () => {
