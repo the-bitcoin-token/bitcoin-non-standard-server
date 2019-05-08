@@ -20,21 +20,6 @@ describe('App', async () => {
     await Db.createSchema()
   })
 
-  describe('web socket', async () => {
-    it('should respond to a simple message', async done => {
-      const ws = new WebSocket('ws://localhost:8080')
-
-      ws.on('open', () => {
-        ws.send(msg)
-      })
-      ws.on('close', () => done())
-      ws.on('message', data => {
-        expect(data).toBe(msg)
-        ws.close()
-      })
-    })
-  })
-
   describe('postDataOutputs', async () => {
     it('Should issue a post request to store an empty array of data outputs', async () => {
       const random = Math.round(Math.random() * 100000)

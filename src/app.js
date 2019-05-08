@@ -13,17 +13,9 @@ import { objToSnakeCase, objToCamelCase } from './utils'
 
 Db.getConnection()
 
-// Web socket
-const webSocketServer = new WebSocket.Server({ port: 8080 })
-webSocketServer.on('connection', ws => {
-  ws.on('message', msg => {
-    ws.send(msg)
-  })
-})
-
-// Http server
 const app = express()
-app.webSocketServer = webSocketServer
+// $FlowFixMe
+app.webSocketServer = new WebSocket.Server({ port: 8080 })
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -58,8 +50,9 @@ app.post('/', async ({ body }: $Request, res: $Response) => {
       )
     )
 
-    app.wss.clients.forEach(client => {
-      client.send('hi')
+    // $FlowFixMe
+    app.webSocketServer.clients.forEach(client => {
+      client.send(JSON.stringify(body))
     })
 
     res.status(201).json({})
