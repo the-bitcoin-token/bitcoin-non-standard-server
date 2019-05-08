@@ -14,9 +14,8 @@ import { objToSnakeCase, objToCamelCase } from './utils'
 Db.getConnection()
 
 // Web socket
-const wss = new WebSocket.Server({ port: 8080 })
-
-wss.on('connection', ws => {
+const webSocketServer = new WebSocket.Server({ port: 8080 })
+webSocketServer.on('connection', ws => {
   ws.on('message', msg => {
     ws.send(msg)
   })
@@ -24,6 +23,7 @@ wss.on('connection', ws => {
 
 // Http server
 const app = express()
+app.webSocketServer = webSocketServer
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -57,6 +57,10 @@ app.post('/', async ({ body }: $Request, res: $Response) => {
             : Promise.resolve()
       )
     )
+
+    app.wss.clients.forEach(client => {
+      client.send('hi')
+    })
 
     res.status(201).json({})
   } catch (err) {

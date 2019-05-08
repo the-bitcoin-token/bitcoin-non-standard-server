@@ -6,7 +6,7 @@ import app from './app'
 
 declare var process: { env: { PORT: string } }
 
-const port = process.env.PORT
-app.listen(port, () =>
-  console.log(`Bitcoin non-standard server listening on port ${port}`)
+const { PORT } = process.env
+app.listen(PORT, () =>
+  console.log(`Bitcoin non-standard server listening on port ${PORT}`)
 )
