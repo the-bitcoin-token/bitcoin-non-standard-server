@@ -2,6 +2,7 @@
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_db"] }] */
 
 import pgPromise from 'pg-promise'
+import 'dotenv/config'
 
 declare var process: {
   env: {
@@ -23,9 +24,10 @@ export default class Db {
 
     // otherwise create a new connection
     const pgp = pgPromise({})
-    const cn = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${
-      process.env.PGHOST
-    }:${process.env.PGPORT}/${process.env.PGDATABASE}`
+    const {
+      env: { PGUSER, PGPASSWORD, PGHOST, PGPORT, PGDATABASE }
+    } = process
+    const cn = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}`
     this._db = pgp(cn)
   }
 

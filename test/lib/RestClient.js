@@ -1,8 +1,9 @@
 // @flow
 /* eslint no-underscore-dangle: ["error", { "allowAfterThis": true, "allow": ["_unwrap", "_get", "_post", "_options"] }] */
 import axios from 'axios'
+import dotenv from 'dotenv'
 
-require('dotenv').config()
+dotenv.config()
 
 declare var process: {
   env: {
