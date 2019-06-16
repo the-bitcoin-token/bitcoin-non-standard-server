@@ -85,5 +85,5 @@ export const getDataOutputs = async (txId: string) =>
 export const getTokenUtxos = async (publicKey: string) =>
   _get(`/txos/${publicKey}`, UN_P2SH_URL)
 
-export const setTxoSpent = async (txId: string, vOut: number) =>
-  _post(`/txos/set-spent/`, { txId, vOut }, UN_P2SH_URL)
+export const setTxoSpent = async (txId: string, virtualIndex: number) =>
+  _post(`/txos/set-spent/`, { txId, virtualIndex }, UN_P2SH_URL)

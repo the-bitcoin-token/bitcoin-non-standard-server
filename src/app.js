@@ -17,7 +17,8 @@ const app = express()
 // $FlowFixMe
 app.webSocketServer = new WebSocket.Server({ port: 8080 })
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '100mb' }))
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }))
 
 /**
  * Stores the output data of a new transaction in the UnP2sh table
@@ -40,12 +41,12 @@ app.post('/', async ({ body }: $Request, res: $Response) => {
     const outputDataJson = JSON.parse(outputData)
 
     const sqlTxos =
-      'INSERT INTO Txos(public_key, tx_id, v_out, spent) VALUES (${publicKey}, ${txId}, ${vOut}, false)'
+      'INSERT INTO Txos(public_key, tx_id, virtual_index, spent) VALUES (${publicKey}, ${txId}, ${virtualIndex}, false)'
     await Promise.all(
       outputDataJson.map(
-        async ({ __kind, __publicKeys: [publicKey] = [] }, vOut) =>
-          __kind === 'script'
-            ? Db.none(sqlTxos, { txId, vOut, publicKey })
+        async ({ kind, _owners: [publicKey] = [] }, virtualIndex) =>
+          kind === 'script'
+            ? Db.none(sqlTxos, { txId, virtualIndex, publicKey })
             : Promise.resolve()
       )
     )
@@ -70,7 +71,7 @@ app.post('/txos/set-spent/', async ({ body }: $Request, res: $Response) => {
 
   try {
     const sql =
-      'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id} AND v_out = ${v_out}'
+      'UPDATE Txos SET spent = true WHERE tx_id = ${tx_id} AND virtual_index = ${virtual_index}'
     await Db.none(sql, objToSnakeCase(body))
     res.status(201).json({})
   } catch (err) {
@@ -102,7 +103,7 @@ app.get('/un-p2sh/:txId', async ({ params }: $Request, res: $Response) => {
 app.get('/txos/:publicKey', async ({ params }: $Request, res: $Response) => {
   try {
     const sql =
-      'SELECT tx_id, v_out FROM Txos WHERE public_key = ${public_key} and spent = false'
+      'SELECT tx_id, virtual_index FROM Txos WHERE public_key = ${public_key} and spent = false'
     const result: Array<any> = await Db.any(sql, objToSnakeCase(params))
     res.status(200).json(result.map(objToCamelCase))
   } catch (err) {

@@ -124,8 +124,8 @@ describe('App', async () => {
       const data = {
         txId: `txId${random}`,
         outputData: `[
-          {"__publicKeys":["${publicKeyHex1}"],"data":["${dataString1}"], "__kind": "script"},
-          {"__publicKeys":["${publicKeyHex2}"],"data":["${dataString2}"], "__kind": "script"}
+          {"_owners":["${publicKeyHex1}"],"data":["${dataString1}"], "kind": "script"},
+          {"_owners":["${publicKeyHex2}"],"data":["${dataString2}"], "kind": "script"}
         ]`
       }
       await RestClient.postDataOutputs(data)
@@ -135,14 +135,14 @@ describe('App', async () => {
       expect(res1.data).toBeDefined()
       expect(res1.data.length).toBe(1)
       expect(res1.data[0].txId).toBe(data.txId)
-      expect(res1.data[0].vOut).toBe(0)
+      expect(res1.data[0].virtualIndex).toBe(0)
       expect(res1.status).toEqual(200)
 
       const res2 = await RestClient.getTokenUtxos(publicKeyHex2)
       expect(res2.data).toBeDefined()
       expect(res2.data.length).toBe(1)
       expect(res2.data[0].txId).toBe(data.txId)
-      expect(res2.data[0].vOut).toBe(1)
+      expect(res2.data[0].virtualIndex).toBe(1)
       expect(res2.status).toEqual(200)
     })
   })
@@ -156,11 +156,11 @@ describe('App', async () => {
       const dataString = 'a'
       const data1 = {
         txId: `txId${random1}`,
-        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "__kind": "script"}]`
+        outputData: `[{"_owners":["${publicKeyHex}"],"data":["${dataString}"], "kind": "script"}]`
       }
       const data2 = {
         txId: `txId${random2}`,
-        outputData: `[{"__publicKeys":["${publicKeyHex}"],"data":["${dataString}"], "__kind": "script"}]`
+        outputData: `[{"_owners":["${publicKeyHex}"],"data":["${dataString}"], "kind": "script"}]`
       }
 
       await RestClient.postDataOutputs(data1)

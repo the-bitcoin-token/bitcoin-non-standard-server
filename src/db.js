@@ -42,7 +42,7 @@ export default class Db {
       id SERIAL,
       public_key varchar(66) NOT NULL,
       tx_id varchar(64) NOT NULL,
-      v_out integer NOT NULL,
+      virtual_index integer NOT NULL,
       spent boolean NOT NULL
     );
     `

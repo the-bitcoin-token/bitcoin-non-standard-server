@@ -7,14 +7,14 @@ function createDbTables() {
     tx_id varchar(64) primary key,
     output_data text NOT NULL
   );
-  
+
   CREATE TABLE IF NOT EXISTS Txos (
     id SERIAL,
     public_key varchar(66) NOT NULL,
     tx_id varchar(64) NOT NULL,
-    v_out integer NOT NULL,
+    virtual_index integer NOT NULL,
     spent boolean NOT NULL
-  );  
+  );
 `
   const tableClient = new Client({
     user: process.env.PGUSER,
